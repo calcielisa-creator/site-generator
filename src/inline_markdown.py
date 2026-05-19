@@ -14,6 +14,8 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             raise Exception("Error: use of invalid markdown")
 
         for i, text in enumerate(split_text):
+            if text == "":
+                continue
             if i%2 == 1:
                 new_nodes.append(TextNode(text, text_type))
                 continue
@@ -83,3 +85,13 @@ def extract_markdown_images(text):
 def extract_markdown_links(text):
     link_markdowns = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
     return link_markdowns
+
+
+def text_to_textnodes(text):
+    text_nodes = split_nodes_delimiter([TextNode(text, TextType.TEXT)], "**", TextType.BOLD)
+    text_nodes = split_nodes_delimiter(text_nodes, "_", TextType.ITALIC)
+    text_nodes = split_nodes_delimiter(text_nodes, "`", TextType.CODE)
+    text_nodes = split_nodes_image(text_nodes)
+    text_nodes = split_nodes_link(text_nodes)
+
+    return text_nodes
