@@ -13,7 +13,7 @@ def block_to_block_type(block):
         return BlockType.HEADING
     
     lines = block.split("\n")
-    if len(lines) > 1 and lines[0].startswith("```") and lines[-1].startswith("```"):
+    if len(lines) > 1 and lines[0] == "```" and lines[-1] == "```":
         return BlockType.CODE
     
     if block.startswith(">"):

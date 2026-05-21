@@ -24,6 +24,11 @@ class TestBlockToBlockType(unittest.TestCase):
         block_type = block_to_block_type(block)
         self.assertEqual(BlockType.HEADING, block_type)
 
+    def test_block_type_heading_seven(self):
+        block = "####### This is not a heading"
+        block_type = block_to_block_type(block)
+        self.assertNotEqual(BlockType.HEADING, block_type)
+
     def test_block_type_heading_no_space(self):
         block = "###fThis is not a heading"
         block_type = block_to_block_type(block)
@@ -70,8 +75,13 @@ class TestBlockToBlockType(unittest.TestCase):
         block_type = block_to_block_type(block)
         self.assertEqual(BlockType.ORDERED_LIST, block_type) 
       
-    def test_block_type_unordered_list_wrong(self):
+    def test_block_type_ordered_list_wrong(self):
         block = "1. This is not\n3. an ordered list"
+        block_type = block_to_block_type(block)
+        self.assertNotEqual(BlockType.ORDERED_LIST, block_type) 
+    
+    def test_block_type_ordered_list_wrong_start(self):
+        block = "2. This is not\n3. an ordered list"
         block_type = block_to_block_type(block)
         self.assertNotEqual(BlockType.ORDERED_LIST, block_type) 
 
@@ -86,6 +96,6 @@ class TestBlockToBlockType(unittest.TestCase):
         self.assertNotEqual(BlockType.CODE, block_type)
 
     def test_block_type_code_blocks_wrong_opening(self):
-        block = "```This is not a code block```"
+        block = "```This is not\n a code block\n```"
         block_type = block_to_block_type(block)
         self.assertNotEqual(BlockType.CODE, block_type)
